@@ -1,0 +1,128 @@
+# Ömer Cengiz tarafından verilen Python Programlama Dili Kursunda (30.11.2020 - 04.12.2020)
+# ödev olarak verilen problemin çözümü için bu program hazırlanmıştır.
+# Bu programı Bilişim Teknolojileri Öğretmeni Sertaç ATEŞ (İzmir Fen Lisesi) hazırlamıştır.
+import numpy as np
+kayitDosyasi=np.array([[]])
+dersler=["Matematik","Fizik","Kimya","Biyoloji","Bilgisayar Bilimi"]
+kayitNo=0
+def kelimeKontrol(str):
+    if str=="":
+        return [0,"Bir girdi yapınız!"]
+    say=0
+    for harf in str:
+        if harf.isalpha()==False and harf!=" ":
+            return [0,"Sadece harf kullanınız!"]
+        else:
+            if harf==" ":
+                say+=1
+    if "  " in str:
+        return [0,"Kelimeler arasında sadece 1 boşluk kullanınız!"]
+    for kelime in str.split():
+        if len(kelime)<2:
+            return [0,"İsim veya soyisim tek karakterden oluşamaz!"]
+    return [1,""]
+kontrol=[]
+hataSay=0
+while hataSay<4:
+    while 1==1 and hataSay<4:
+        isim=input("İsminizi giriniz:")
+        kontrol=kelimeKontrol(isim)
+        if kontrol[0]==0:
+            hataSay+=1
+            print(kontrol[1],"Hatalı girdi sayısı =",hataSay)
+            continue
+        else:
+            while 1==1 and hataSay<4:
+                soyisim=input("Soyisminizi giriniz:")
+                kontrol=kelimeKontrol(soyisim)
+                if kontrol[0]==0:
+                    hataSay+=1
+                    print(kontrol[1],"Hatalı girdi sayısı =",hataSay)
+                    continue
+                else:
+                    break
+            break
+    if hataSay<4:
+        print("Welcome "+isim+' '+soyisim)
+        kayitDosyasi=np.append(kayitDosyasi,[isim,soyisim])
+        kayitNo+=1
+        hataSay=0
+    else:
+        break
+    print("\n",50*"=","\n","5 ders almak zorundasınız!",sep="")
+    print("Bu 5 dersten en az 3 tanesini veremezseniz sınıfta kalırsınız!")
+    print("Eğer 3'ten daha az dersin notunu girerseniz yine sınıfta kalırsınız!")
+    print("Şimdi size derslerin notlarını bir defaya mahsus soracağız.")
+    sec=0
+    kaldiginDersler=0
+    while sec<5:
+        secim='e'
+        while (secim!='e' or secim!='h') and sec<5:
+            uyari=dersler[sec]+" dersinin notlarını girecek misiniz? (e/h)"
+            secim=input(uyari)
+            secim.lower()
+            if secim=='e':
+                h=1
+                while h==1:
+                    try:
+                        m=int(input("MidTerm="))
+                        h=0
+                        if m<0 or m>100:
+                            print("Lütfen notunuzu 0 - 100 kapalı aralığında giriniz!")
+                            h=1
+                    except:
+                        h=1
+                        print("Lütfen hatalı girdi yapmayınız!")
+                h=1
+                while h==1:
+                    try:
+                        f=int(input("Final="))
+                        h=0
+                        if f<0 or f>100:
+                            print("Lütfen notunuzu 0 - 100 kapalı aralığında giriniz!")
+                            h=1
+                    except:
+                        h=1
+                        print("Lütfen hatalı girdi yapmayınız!")
+                h=1
+                while h==1:
+                    try:
+                        p=int(input("Project="))
+                        h=0
+                        if p<0 or p>100:
+                            print("Lütfen notunuzu 0 - 100 kapalı aralığında giriniz!")
+                            h=1
+                    except:
+                        h=1
+                        print("Lütfen hatalı girdi yapmayınız!")
+                sozluk={"midterm":m,"final":f,"project":p}
+                kayitDosyasi=np.append(kayitDosyasi,sozluk)
+                notun=(m*30+f*50+p*20)/100
+                if notun>=90:
+                    kayitDosyasi=np.append(kayitDosyasi,{dersler[sec]:"AA"})
+                elif 70<=notun and notun<90:
+                    kayitDosyasi=np.append(kayitDosyasi,{dersler[sec]:"BB"})
+                elif 50<=notun and notun<70:
+                    kayitDosyasi=np.append(kayitDosyasi,{dersler[sec]:"CC"})
+                elif 30<=notun and notun<50:
+                    kayitDosyasi=np.append(kayitDosyasi,{dersler[sec]:"DD"})
+                else:
+                    kayitDosyasi=np.append(kayitDosyasi,{dersler[sec]:"FF"})
+                    print(dersler[sec],"dersinden FF aldınız!")
+                    kaldiginDersler+=1
+                sec+=1
+            elif secim=='h':
+                kayitDosyasi=np.append(kayitDosyasi,{"midterm":0,"final":0,"project":0,dersler[sec]:"FF"})
+                kaldiginDersler+=1
+                sec+=1
+            else:
+                print("Lütfen sadece 'e' veya 'h' harfini kullanınız!")
+            if kaldiginDersler>2:
+                break
+        if kaldiginDersler>2:
+            print("You failed in class")
+            break
+    print("Programın shut down olması için 3 kez hatalı giriş yapabilirsiniz!")
+print("Please try again later")
+print(50*"=")
+print("Bu kısım ek çıktıdır:","\n",50*"=","\n",kayitDosyasi,"\n",kayitDosyasi.ndim,kayitDosyasi.shape,sep="")
